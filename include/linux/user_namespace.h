@@ -66,6 +66,10 @@ enum rlimit_type {
 	UCOUNT_RLIMIT_COUNTS,
 };
 
+#if IS_ENABLED(CONFIG_BINFMT_MISC)
+struct binfmt_misc;
+#endif
+
 struct user_namespace {
 	struct uid_gid_map	uid_map;
 	struct uid_gid_map	gid_map;
@@ -104,7 +108,9 @@ struct user_namespace {
 	long ucount_max[UCOUNT_COUNTS];
 	long rlimit_max[UCOUNT_RLIMIT_COUNTS];
 
-	ANDROID_KABI_RESERVE(1);
+#if IS_ENABLED(CONFIG_BINFMT_MISC)
+	ANDROID_KABI_USE(1, struct binfmt_misc *binfmt_misc);
+#endif
 	ANDROID_KABI_RESERVE(2);
 } __randomize_layout;
 
